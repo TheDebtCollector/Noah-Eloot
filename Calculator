@@ -1,0 +1,289 @@
+  static void Main()
+    {
+        StartupScreen();
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.Write("> ");
+        Console.ResetColor();
+
+        while (true)
+        {
+            string input = Console.ReadLine().Trim();
+            history.Add(input);
+
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.Write("> ");
+                Console.ResetColor();
+                continue;
+            }
+
+            if (input.ToLower() == "exit")
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("> Exiting the calculator. Goodbye!");
+                Console.ResetColor();
+                break;
+            }
+            else if (input == "locals")
+            {
+                ShowLocals();
+            }
+            else if (input.Contains("=") && input.StartsWith("m"))
+            {
+                ProcessVariableAssignment(input);
+            }
+            else if (input == "clear")
+            {
+                Clear();
+            }
+            else if (input == "listcalc")
+            {
+                Listcalc();
+            }
+            else if (input == "author")
+            {
+                ShowAuthor();
+            }
+            else if (input == "clear locals")
+            {
+                Array.Clear(locals, 0, locals.Length);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Locals have been cleared");
+                Console.ResetColor();
+            }
+            else
+            {
+                try
+                {
+                    string expression = ReplaceVariablesWithValues(input);
+                    decimal result = EvaluateExpression(expression);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"> Result: {result}");
+                    Console.ResetColor();
+                }
+                catch (Exception ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("> Invalid expression!");
+                    Console.WriteLine("> Details: " + ex.Message);
+
+                    if (ex.Message.Contains("Input string") || ex is FormatException)
+                        Console.WriteLine("> Tip: Check for missing or malformed numbers.");
+                    if (ex.Message.Contains("divide by zero"))
+                        Console.WriteLine("> Tip: You can't divide by zero!");
+                    if (ex.Message.Contains("Invalid operator"))
+                        Console.WriteLine("> Tip: Make sure you're using only supported operators.");
+
+                    Console.ResetColor();
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write("> ");
+            Console.ResetColor();
+        }
+    }
+
+    private static void ShowAuthor()
+    {
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine("Dit programma is geschreven door noah eloot, en is ook eigendom van noah eloot.");
+        Console.ResetColor();
+        string asciiArt = @"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ++++++++++++++++++##%%%%%%%%###+++++++++++++++++++++++++ +++++++++++@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%#**++++++++++ +++++++%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#+++++ ++++++@@@@@@%##++++++++++++++++#@@@%%@@@#+++++ ++++++%@@@#++++++++++++++++++++++++++++++++++++++@@@+++++ +++++#@@%+++++++++++++++++++++++++++++++++++++++++@@@#++++ +++++%@@+++++++++++++++++++++++++++++%++++++++++@@@#++++ ++++#@@@+++++++++++++++++%++++++++++++++++++++@@@%++++ ++++%@@@++++++++++++++++++#+++++++++#+++++++++++%@@##### ++++%@@@++++%@%#++++++++++++++++++++++++++++++++++%#++++# ++++%@@#+++++@@@@@@@@%#++++++++++++#%@@@@@@@%%++%* %#%@@++++#%%@@@@@@@@@%##++++++%@@@@@@@@@@%+#+++#++ #++#+++##++##%@%%##*###%%%#####%%%@+++#+++ +#+#+++++++##%%##%##++%+++++%**+++##%@++%+++%++++ +++##+++++#+++++++++#++@+++++##+++++++++++#+++++ +++++#%+++++++########+++#++++++%###++###+++#+++++ +++++++++++++++++++++++++#++++++#+++++++++++++++++#+++++ +++++++++++++++++++++++++++++++#+++++++++++++++++#+++++ ++++++++++++++++++++++++++#++++++#+++++++++++++++#+++++ +++++++++++++++++++++++++#+++++++%+++++++++++++++%++++++ ++++++++++++++++++++++++%+++++++#++++++++++++++++++++ +++++++#+++++++++++++++#%##%#%+++++++++++++++++++ ++++++++++++++++++++++++++++++++++++++++++++++**++++++ ++++++++#+++++++++++++++++++++++++++++#++++++++#+++++++ +++++++++%++++++++#++++++##++**++++#++++++#++++++++ +++++++++#++++++++##+++++++++++#*+++%++++++++++++ +++++++++#+++++++++%##++++++%+++++++++ ++++++++++#++++++%#+++++++++++++++++++##+++#++++++++++ +++++++++++#+++##++#++++++++++++++++#+++#+%+++++++++++ +++++++++++++#++++++++%+++++++%#+++++++#++++++++++++ ++++++++++++++%++++++++++###+++++++++++%+++++++++++++ +++++++++++++++%++++++++%+##+++++++%+++++++++++++++ ++++++++++++++++++#+++++++++++++++++++##+++++++++++++++++ ++++++++++++++++++++%+++++++++++++##++++++++++++++++++++ +++++++++++++++++++++%#+++++++++#+++++++++++++++++++++++ +++++++++++++++++++++++++#%%%%#++++++++++++++++++++++++++ ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"; Console.WriteLine(asciiArt); }
+
+    private static void StartupScreen()
+    {
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine(
+            "***********************************************************************\n" +
+            "*  W E L C O M E   T O   T H E   C O N S O L E   C A L C U L A T O R  *\n" +
+            "***********************************************************************\n" +
+            "* - Type 'locals' to see stored variables.                            *\n" +
+            "* - Use 'm1=10.5' to assign decimal values to variables.              *\n" +
+            "* - Type 'listcalc' for a list of supported operations.               *\n" +
+            "* - Type 'author' for information about the author                    *\n" +
+            "* - Type 'clear' to reset the console.                                *\n" +
+            "* - Type 'clear locals' to clear the locals.                          *\n" +
+            "* - Type 'exit' to close the calculator.                              *\n" +
+            "***********************************************************************\n"
+        );
+        Console.ResetColor();
+    }
+
+    private static string ReplaceVariablesWithValues(string expression)
+    {
+        for (int i = 0; i < locals.Length; i++)
+        {
+            string varName = $"m{i + 1}";
+            if (expression.Contains(varName))
+            {
+                expression = expression.Replace(varName, locals[i].ToString());
+            }
+        }
+        return expression;
+    }
+
+    private static decimal EvaluateExpression(string expression)
+    {
+        Stack<decimal> values = new Stack<decimal>();
+        Stack<char> operators = new Stack<char>();
+        int i = 0;
+
+        while (i < expression.Length)
+        {
+            if (Char.IsDigit(expression[i]) || expression[i] == '.')
+            {
+                string number = "";
+                while (i < expression.Length && (Char.IsDigit(expression[i]) || expression[i] == '.'))
+                {
+                    number += expression[i++];
+                }
+                values.Push(decimal.Parse(number));
+            }
+            else if ("+-*/%^".Contains(expression[i]))
+            {
+                while (operators.Count > 0 && GetOperatorPrecedence(operators.Peek()) >= GetOperatorPrecedence(expression[i]))
+                {
+                    ProcessOperation(values, operators);
+                }
+                operators.Push(expression[i++]);
+            }
+            else if (expression[i] == '(')
+            {
+                operators.Push(expression[i++]);
+            }
+            else if (expression[i] == ')')
+            {
+                while (operators.Count > 0 && operators.Peek() != '(')
+                {
+                    ProcessOperation(values, operators);
+                }
+                operators.Pop();
+                i++;
+            }
+            else
+            {
+                i++;
+            }
+        }
+
+        while (operators.Count > 0)
+        {
+            ProcessOperation(values, operators);
+        }
+
+        return values.Pop();
+    }
+
+    private static void ProcessOperation(Stack<decimal> values, Stack<char> operators)
+    {
+        decimal b = values.Pop();
+        decimal a = values.Pop();
+        char op = operators.Pop();
+
+        decimal result;
+
+        switch (op)
+        {
+            case '+': result = a + b; break;
+            case '-': result = a - b; break;
+            case '*': result = a * b; break;
+            case '/':
+                if (b == 0) throw new InvalidOperationException("Cannot divide by zero!");
+                result = a / b; break;
+            case '%': result = a % b; break;
+            case '^': result = (decimal)Math.Pow((double)a, (double)b); break;
+            default: throw new InvalidOperationException("Invalid operator");
+        }
+
+        values.Push(result);
+    }
+
+    private static int GetOperatorPrecedence(char op)
+    {
+        switch (op)
+        {
+            case '+':
+            case '-': return 1;
+            case '*':
+            case '/':
+            case '%': return 2;
+            case '^': return 3;
+            default: return 0;
+        }
+    }
+
+    private static void ShowLocals()
+    {
+        for (int i = 0; i < locals.Length; i++)
+        {
+            Console.WriteLine($"m{i + 1} = {locals[i]}");
+        }
+    }
+
+    private static void ProcessVariableAssignment(string input)
+    {
+        try
+        {
+            string[] parts = input.Split('=');
+            if (parts.Length == 2 && parts[0].StartsWith("m") && int.TryParse(parts[0].Substring(1), out int varIndex))
+            {
+                varIndex -= 1;
+                if (varIndex >= 0 && varIndex < locals.Length)
+                {
+                    if (decimal.TryParse(parts[1].Trim(), out decimal value))
+                    {
+                        locals[varIndex] = value;
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"> Variable m{varIndex + 1} set to {locals[varIndex]}");
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("> Invalid value assigned to variable!");
+                        Console.ResetColor();
+                    }
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("> This local index does not exist, choose between 1 and 10");
+                    Console.ResetColor();
+                }
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("> Invalid variable assignment! Use format m1=10.5");
+                Console.ResetColor();
+            }
+        }
+        catch (Exception)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("> Error processing variable assignment!");
+            Console.ResetColor();
+        }
+    }
+
+    private static void Clear()
+    {
+        Console.Clear();
+        StartupScreen();
+    }
+
+    private static void Listcalc()
+    {
+        Console.WriteLine("COMMAND\tEXAMPLE\t\tDESCRIPTION\n" +
+            "+\t1.2+2.5\t\tAdds two numbers\n" +
+            "-\t1.7-2.3\t\tSubtracts two numbers\n" +
+            "/\t3.5/1.4\t\tDivides two numbers\n" +
+            "*\t1.6*2.1\t\tMultiplies two numbers\n" +
+            "%\t5.7%2.4\t\tFinds the remainder\n" +
+            "^\t2.3^1.5\t\tCalculates exponentiation\n" +
+            "( )\t(1+2)*3\t\tParentheses are evaluated first\n\n" +
+            "You can combine multiple operators, decimals, and variables!");
+    }
+}
