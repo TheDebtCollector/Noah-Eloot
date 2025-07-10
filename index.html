@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant Steven</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:700,400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container nav-container">
+      <div class="logo">Restaurant Steven</div>
+      <ul class="nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menukaart</a></li>
+        <li><a href="reservations.html">Reservaties</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu">&#9776;</button>
+    </div>
+  </nav>
+
+  <header class="hero" id="home">
+    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80" alt="Sfeervol restaurant" class="hero-img">
+    <div class="hero-content">
+      <h1>Welkom bij Restaurant Steven</h1>
+      <p>Een nieuwe start, een nieuw interieur, en een degelijke keuken. Iedereen voelt zich thuis bij ons!</p>
+      <a href="reservations.html" class="btn">Reserveer nu</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="about card">
+      <h2>Over ons</h2>
+      <p>Na 28 jaar Restaurant De Zwarte Kat uitgebaat te hebben, was het tijd voor een nieuwe uitdaging. Chef Marnik, Harald, Aziz en wijzelf geven het beste van onszelf, met lokale producten en een warme sfeer.</p>
+    </section>
+
+    <section class="card hours">
+      <h2>Openingsuren</h2>
+      <div class="table-responsive">
+        <table>
+          <tr><th>ma:</th><td>Gesloten</td><td>Gesloten</td></tr>
+          <tr><th>di:</th><td>Gesloten</td><td>Gesloten</td></tr>
+          <tr><th>wo:</th><td>12:00 - 14:15</td><td>18:00 - 21:15</td></tr>
+          <tr><th>do:</th><td>12:00 - 14:15</td><td>18:00 - 21:15</td></tr>
+          <tr><th>vr:</th><td>12:00 - 14:15</td><td>18:00 - 21:15</td></tr>
+          <tr><th>za:</th><td>12:00 - 14:15</td><td>18:00 - 21:15</td></tr>
+          <tr><th>zo:</th><td>12:00 - 14:15</td><td>18:00 - 21:15</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section class="card contact" id="contact">
+      <h2>Contact</h2>
+      <p>
+        <a href="tel:+3253787863">+32 53 787863</a><br>
+        <a href="tel:+32471306618">+32 471 306618</a>
+      </p>
+      <address>
+        Kerkstraat 29<br>
+        9300 Aalst, België<br>
+        BE 0631723683
+      </address>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <small>&copy; 2024 Restaurant Steven &mdash; Website door Livalos</small>
+      <address style="margin: 0.7em 0 0.2em 0; font-style: normal; color: #fff;">
+        Kerkstraat 2<br>
+        9300 Aalst<br>
+        België<br>
+        BE 0631723683
+      </address>
+      <nav class="footer-nav">
+        <a href="#">Disclaimer</a> |
+        <a href="#">Privacybeleid</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    // Simple mobile nav toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    const nav = document.querySelector('.nav');
+    navToggle.addEventListener('click', () => {
+      nav.classList.toggle('nav-open');
+    });
+  </script>
+</body>
+</html>

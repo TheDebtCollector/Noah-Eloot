@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservaties - Restaurant Steven</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:700,400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container nav-container">
+      <div class="logo">Restaurant Steven</div>
+      <ul class="nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menukaart</a></li>
+        <li><a href="reservations.html">Reservaties</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu">&#9776;</button>
+    </div>
+  </nav>
+  <header class="hero">
+    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80" alt="Reserveren" class="hero-img">
+    <div class="hero-content">
+      <h1>Reserveer uw tafel</h1>
+      <p>Vul het formulier in om uw reservatie te maken. Wij bevestigen zo snel mogelijk!</p>
+    </div>
+  </header>
+  <main class="container">
+    <section class="card">
+      <form>
+        <label for="naam">Naam:</label><br>
+        <input type="text" id="naam" name="naam" required><br><br>
+        <label for="telefoon">Telefoon:</label><br>
+        <input type="tel" id="telefoon" name="telefoon" required><br><br>
+        <label for="datum">Datum:</label><br>
+        <input type="date" id="datum" name="datum" required><br><br>
+        <label for="tijd">Tijd:</label><br>
+        <input type="time" id="tijd" name="tijd" required><br><br>
+        <label for="personen">Aantal personen:</label><br>
+        <input type="number" id="personen" name="personen" min="1" max="20" required><br><br>
+        <label for="opmerking">Opmerking:</label><br>
+        <textarea id="opmerking" name="opmerking" rows="3"></textarea><br><br>
+        <button type="submit" class="btn">Verzenden</button>
+      </form>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="container">
+      <small>&copy; 2024 Restaurant Steven &mdash; Website door Livalos</small>
+      <address style="margin: 0.7em 0 0.2em 0; font-style: normal; color: #fff;">
+        Kerkstraat 2<br>
+        9300 Aalst<br>
+        België<br>
+        BE 0631723683
+      </address>
+      <nav class="footer-nav">
+        <a href="#">Disclaimer</a> |
+        <a href="#">Privacybeleid</a>
+      </nav>
+    </div>
+  </footer>
+  <script>
+    const navToggle = document.querySelector('.nav-toggle');
+    const nav = document.querySelector('.nav');
+    navToggle.addEventListener('click', () => {
+      nav.classList.toggle('nav-open');
+    });
+  </script>
+</body>
+</html> 
